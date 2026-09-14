@@ -1,0 +1,64 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-8 py-12">
+
+    <h2 class="text-4xl font-bold mb-10 text-white">
+        Latest Posts
+    </h2>
+
+    {% for post in posts %}
+
+    <article class="border-b border-gray-800 pb-8 mb-8">
+        <img src="" alt="" srcset="">
+        <p class="text-sm text-gray-500">
+            {{ post.author }} · {{ post.date_posted }}
+        </p>
+
+        <h3 class="text-2xl font-bold mt-2 text-gray-100">
+            {{ post.title }}
+        </h3>
+
+        <p class="text-gray-400 mt-3">
+            {{ post.content[:100] }}...
+        </p>
+
+        <p id="content-{{ post.id }}"
+           class="hidden text-gray-400 mt-3">
+            {{ post.content }}
+        </p>
+
+        <button
+            onclick="toggleContent('{{ post.id }}')"
+            id="btn-{{ post.id }}"
+            class="mt-4 text-sm font-semibold text-gray-300 underline hover:text-white">
+
+            Read More
+
+        </button>
+
+    </article>
+
+    {% endfor %}
+
+</div>
+
+<script>
+function toggleContent(id) {
+
+    const content = document.getElementById("content-" + id);
+    const button = document.getElementById("btn-" + id);
+
+    content.classList.toggle("hidden");
+
+    button.innerText =
+        content.classList.contains("hidden")
+        ? "Read More"
+        : "Show Less";
+}
+</script>
+
+{% endblock content %}
+
