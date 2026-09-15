@@ -1,0 +1,233 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center p-8">
+
+    <div class="w-full max-w-2xl">
+
+        <!-- Profile Card -->
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-white">
+                        Profile
+                    </h1>
+
+                    <p class="text-gray-400 mt-1">
+                        Manage your profile information
+                    </p>
+                </div>
+
+                <!-- Edit Button -->
+                <button
+                    onclick="toggleEdit()"
+                    class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition">
+                    Edit Profile
+                </button>
+            </div>
+
+
+            <!-- Profile Information -->
+            <div id="profile-view">
+
+                <!-- Profile Picture -->
+                <div class="flex items-center gap-6 mb-8">
+
+                    <img
+                        src="{{ url_for('static',path='profile.png') }}"
+                        alt="Profile Picture"
+                        class="w-28 h-28 rounded-full object-cover border-4 border-gray-700"
+                    >
+
+                    <div>
+                        <h2 class="text-2xl font-semibold text-white">
+                            Priyanshu Tiwari
+                        </h2>
+
+                        <p class="text-gray-400 mt-1">
+                           priyanshu@gmail.com
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Details -->
+                <div class="space-y-4">
+
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-sm text-gray-400">
+                            Name
+                        </p>
+
+                        <p class="text-lg text-white">
+                           priyanshu
+                        </p>
+                    </div>
+
+
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <p class="text-sm text-gray-400">
+                            Email
+                        </p>
+
+                        <p class="text-lg text-white">
+                            priyan
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Edit Form -->
+            <div id="profile-edit" class="hidden">
+
+                <form
+                    action=""
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="space-y-6"
+                >
+
+                    <!-- Profile Picture -->
+                    <div>
+
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            Profile Picture
+                        </label>
+
+                        <div class="flex items-center gap-5">
+
+                            <img
+                                id="preview"
+                                src=""
+                                alt="Profile Picture"
+                                class="w-20 h-20 rounded-full object-cover border-2 border-gray-700"
+                            >
+
+                            <input
+                                type="file"
+                                name="profile_picture"
+                                accept="image/*"
+                                onchange="previewImage(event)"
+                                class="block w-full text-sm text-gray-400
+                                       file:mr-4 file:py-2 file:px-4
+                                       file:rounded-lg file:border-0
+                                       file:bg-gray-700 file:text-white
+                                       hover:file:bg-gray-600"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Name -->
+                    <div>
+
+                        <label
+                            for="name"
+                            class="block text-sm font-medium text-gray-300 mb-2">
+                            Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value=""
+                            class="w-full bg-gray-800 border border-gray-700
+                                   rounded-lg px-4 py-3 text-white
+                                   focus:outline-none focus:ring-2
+                                   focus:ring-blue-500"
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div>
+
+                        <label
+                            for="email"
+                            class="block text-sm font-medium text-gray-300 mb-2">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value=""
+                            class="w-full bg-gray-800 border border-gray-700
+                                   rounded-lg px-4 py-3 text-white
+                                   focus:outline-none focus:ring-2
+                                   focus:ring-blue-500"
+                        >
+
+                    </div>
+
+
+                    <!-- Buttons -->
+                    <div class="flex gap-3 pt-4">
+
+                        <button
+                            type="submit"
+                            class="px-5 py-2 rounded-lg bg-blue-600
+                                   hover:bg-blue-700 text-white
+                                   font-medium transition">
+                            Save Changes
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="toggleEdit()"
+                            class="px-5 py-2 rounded-lg bg-gray-700
+                                   hover:bg-gray-600 text-white
+                                   font-medium transition">
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function toggleEdit() {
+
+    const view = document.getElementById("profile-view");
+    const edit = document.getElementById("profile-edit");
+
+    view.classList.toggle("hidden");
+    edit.classList.toggle("hidden");
+
+}
+
+
+function previewImage(event) {
+
+    const image = document.getElementById("preview");
+
+    image.src = URL.createObjectURL(event.target.files[0]);
+
+}
+
+</script>
+
+{% endblock content %}
+

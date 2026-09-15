@@ -1,0 +1,61 @@
+```html
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center px-6">
+
+    <div class="text-center max-w-2xl">
+
+        <!-- Error Code -->
+        <div class="text-8xl font-black text-gray-700 select-none">
+            404
+        </div>
+
+
+        <!-- Funny Error Icon -->
+        <div class="text-7xl my-6">
+            💀
+        </div>
+
+
+        <!-- Title -->
+        <h1 class="text-3xl font-bold text-white mb-4">
+            Well... That Wasn't Supposed To Happen 😭
+        </h1>
+
+
+        <!-- Error Message -->
+        <p class="text-gray-400 text-lg mb-4">
+           not working
+        </p>
+
+
+        <!-- Funny Message -->
+        <p class="text-gray-600 text-sm mb-8">
+            The server has absolutely no idea what just happened.
+            But don't worry, we're blaming the code. 👨‍💻
+        </p>
+
+
+        <!-- Go Home -->
+        <a
+            href="{{ url_for('home') }}"
+            class="inline-flex items-center gap-2
+                   px-6 py-3
+                   rounded-xl
+                   bg-blue-600
+                   hover:bg-blue-700
+                   text-white
+                   font-medium
+                   transition"
+        >
+            ← Take Me Home
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock content %}
+```

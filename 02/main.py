@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, status
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
-
+app.mount("/static", StaticFiles(directory="02/static"), name="static")
 templates = Jinja2Templates(directory="02/templates")
 print(templates.get_template)
 posts: list[dict] = [
@@ -23,7 +24,8 @@ posts: list[dict] = [
 ]
 
 
-@app.get("/posts")
+@app.get("/", include_in_schema=False, name="home")
+@app.get("/posts", include_in_schema=False, name="posts")
 def home(request: Request):
     return templates.TemplateResponse(
         request,
@@ -33,3 +35,35 @@ def home(request: Request):
             "title": "Home",
         },
     )
+
+
+@app.get("/profile", include_in_schema=False, name="profile")
+def profiles(request: Request):
+    return templates.TemplateResponse(request, "error.html")
+
+
+@app.get("/post/{post_id}", include_in_schema=False)
+def post_page(req: Request, post_id: int):
+    for post in posts:
+        if post["id"] == post_id:
+            title = post["title"][:30]
+            return templates.TemplateResponse(
+                req,
+                "post.html",
+                {"post": post, "title": title},
+            )
+
+    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Post not Found!")
+
+
+@app.get("/api/posts")
+def get_posts():
+    return posts
+
+
+@app.get("/api/post/{post_id}")
+def get_post(post_id: int):
+    for post in posts:
+        if post.get("id") == post_id:
+            return post
+    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Post is not Found!")

@@ -12,14 +12,20 @@
     {% for post in posts %}
 
     <article class="border-b border-gray-800 pb-8 mb-8">
-        <img src="" alt="" srcset="">
+       
         <p class="text-sm text-gray-500">
             {{ post.author }} · {{ post.date_posted }}
         </p>
 
-        <h3 class="text-2xl font-bold mt-2 text-gray-100">
+        <div class="flex items-center justify-start py-2  gap-5 ">
+             <img src="{{url_for('static', path='profile.png')}}" alt="{{ post.author }}"  class="w-10 h-10 rounded-lg items-center flex justify-center">
+               <a href="{{ url_for('post_page',post_id=post.id) }}">
+                <h3 class="text-2xl font-bold mt-2 text-gray-100">
             {{ post.title }}
         </h3>
+               </a>
+        </div>
+      
 
         <p class="text-gray-400 mt-3">
             {{ post.content[:100] }}...
