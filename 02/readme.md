@@ -30,3 +30,19 @@ message
 pending erro:
 http://localhost:8000/post/hello -> handle validationError -> RequestValidationError
 http://localhost:8000/post/99 -> handle expection -> StarlettleExpection
+
+
+
+# lecture 6
+
+update- put,patch
+
+model_dump()??
+
+excule_unset -> it gave what client give 
+if it is false and let say client give only title then it make other field as a None-default
+
+setattr
+
+delete,patch -  user
+cancade-all,delete-orphan

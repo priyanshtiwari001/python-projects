@@ -12,38 +12,71 @@
     {% for post in posts %}
 
     <article class="border-b border-gray-800 pb-8 mb-8">
-       
+
+        <!-- Author + Date -->
         <p class="text-sm text-gray-500">
-            {{ post.author }} · {{ post.date_posted }}
+            <a
+                href="{{ url_for('user_post_page', user_id=post.author.id) }}"
+                class="text-gray-400 hover:text-white"
+            >
+                {{ post.author.username }}
+            </a>
+
+            · {{ post.date_posted.strftime("%B %d, %Y") }}
         </p>
 
-        <div class="flex items-center justify-start py-2  gap-5 ">
-             <img src="{{url_for('static', path='profile.png')}}" alt="{{ post.author }}"  class="w-10 h-10 rounded-lg items-center flex justify-center">
-               <a href="{{ url_for('post_page',post_id=post.id) }}">
-                <h3 class="text-2xl font-bold mt-2 text-gray-100">
-            {{ post.title }}
-        </h3>
-               </a>
+        <!-- Title -->
+        <div class="flex items-center justify-start py-2 gap-5">
+
+            <img
+                src="{{ url_for('static', path='profile.png') }}"
+                alt="{{ post.author.username }}"
+                class="w-10 h-10 rounded-lg object-cover"
+            >
+
+            <a href="{{ url_for('post_page', post_id=post.id) }}">
+                <h3 class="text-2xl font-bold text-gray-100 hover:text-white">
+                    {{ post.title }}
+                </h3>
+            </a>
+
         </div>
-      
 
-        <p class="text-gray-400 mt-3">
-            {{ post.content[:100] }}...
-        </p>
+        <!-- Content -->
+        <div class="text-gray-400 mt-3">
 
-        <p id="content-{{ post.id }}"
-           class="hidden text-gray-400 mt-3">
-            {{ post.content }}
-        </p>
+            <!-- Preview -->
+            <p id="preview-{{ post.id }}">
+                {{ post.content[:100] }}
+
+                {% if post.content|length > 100 %}
+                    <span>...</span>
+                {% endif %}
+            </p>
+
+            <!-- Full content -->
+            <p
+                id="full-{{ post.id }}"
+                class="hidden"
+            >
+                {{ post.content }}
+            </p>
+
+        </div>
+
+        <!-- Read More -->
+        {% if post.content|length > 100 %}
 
         <button
+            type="button"
             onclick="toggleContent('{{ post.id }}')"
             id="btn-{{ post.id }}"
-            class="mt-4 text-sm font-semibold text-gray-300 underline hover:text-white">
-
+            class="mt-4 text-sm font-semibold text-gray-300 underline hover:text-white"
+        >
             Read More
-
         </button>
+
+        {% endif %}
 
     </article>
 
@@ -51,20 +84,28 @@
 
 </div>
 
+
 <script>
 function toggleContent(id) {
 
-    const content = document.getElementById("content-" + id);
+    const preview = document.getElementById("preview-" + id);
+    const full = document.getElementById("full-" + id);
     const button = document.getElementById("btn-" + id);
 
-    content.classList.toggle("hidden");
+    const isHidden = full.classList.contains("hidden");
 
-    button.innerText =
-        content.classList.contains("hidden")
-        ? "Read More"
-        : "Show Less";
+    if (isHidden) {
+        // Show full content
+        preview.classList.add("hidden");
+        full.classList.remove("hidden");
+        button.innerText = "Show Less";
+    } else {
+        // Show preview
+        full.classList.add("hidden");
+        preview.classList.remove("hidden");
+        button.innerText = "Read More";
+    }
 }
 </script>
 
 {% endblock content %}
-

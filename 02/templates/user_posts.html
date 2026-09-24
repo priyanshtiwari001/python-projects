@@ -1,0 +1,90 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="min-h-screen bg-black text-white">
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
+
+        <!-- Page heading -->
+        <h1 class="text-3xl font-bold text-white mb-8">
+            Posts by {{ user.username }}
+        </h1>
+
+        <!-- Posts -->
+        {% for post in posts %}
+
+        <article class="bg-black text-white border border-gray-800 rounded-xl p-6 mb-6 shadow-sm hover:shadow-md transition-shadow">
+
+            <div class="flex items-start gap-4">
+
+                <!-- Profile image -->
+                <img
+                    class="rounded-full flex-shrink-0 object-cover"
+                    src="{{ post.author.image_path }}"
+                    alt="{{ post.author.username }}'s profile picture"
+                    width="64"
+                    height="64"
+                    loading="lazy"
+                >
+
+                <!-- Post content -->
+                <div class="flex-1 min-w-0">
+
+                    <!-- Metadata -->
+                    <div class="flex items-center gap-2 mb-2 text-sm">
+
+                        <a
+                            href="{{ url_for('user_post_page', user_id=post.author.id) }}"
+                            class="font-medium text-white hover:text-gray-300 hover:underline"
+                        >
+                            {{ post.author.username }}
+                        </a>
+
+                        <span class="text-gray-600">•</span>
+
+                        <small class="text-gray-400">
+                            {{ post.date_posted.strftime("%B %d, %Y") }}
+                        </small>
+
+                    </div>
+
+                    <!-- Title -->
+                    <h2 class="text-xl font-semibold mb-2">
+
+                        <a
+                            href="{{ url_for('post_page', post_id=post.id) }}"
+                            class="text-white hover:text-gray-300 transition-colors"
+                        >
+                            {{ post.title }}
+                        </a>
+
+                    </h2>
+
+                    <!-- Content -->
+                    <p class="text-gray-300 leading-relaxed">
+                        {{ post.content }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% else %}
+
+        <!-- No posts -->
+        <p class="text-gray-400 text-center py-12">
+            No posts by this user yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock content %}
+
