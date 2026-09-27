@@ -42,5 +42,7 @@ class PostUpdate(BaseModel):
 
 class UserUpdate(BaseModel): 
     username:str | None = Field(default=None,min_length=1,max_length=20)
-    email:EmailStr
+    email:EmailStr | None = Field(default=None)
     image_file:str|  None =  Field(default=None, min_length=1, max_length=200)
+
+

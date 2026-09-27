@@ -1,4 +1,4 @@
-from schemas import PostResponse,PostCreate,UserCreate,UserResponse,PostUpdate
+from schemas import PostResponse,PostCreate,UserCreate,UserResponse,UserUpdate
 import models
 from typing import Annotated
 from sqlalchemy import select
@@ -66,16 +66,43 @@ def update_put_post(post_data:PostCreate,post_id:int,db:Annotated[Session,Depend
      db.refresh(post)
      return post
      
-@app.put("/api/user/{user_id}",response_model=UserResponse)
-def put_update_user(user_id:int,db:Annotated[Session,Depends(get_db)]):
-    pass
+@app.patch("/api/user/{user_id}",response_model=UserResponse)
+def put_update_user(user_data:UserUpdate,user_id:int,db:Annotated[Session,Depends(get_db)]):
+    user = db.execute(select(models.User).where(models.User.id == user_id)).scalars().first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User is not Found!")
+    if user_data.username is not None and user_data.username != user.username:
+        existing_user =  db.execute(select(models.User).where(models.User.username == user_data.username)).scalars().first()
+        if existing_user:
+             raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail="Username already exist!")
+    if user_data.email is not None and user_data.email !=user.email:
+        existing_user =  db.execute(select(models.User).where(models.User.email == user_data.email)).scalars().first()
+        if existing_user:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail="email already exist!")
+    
+    # if user_data.username is not None:   
+    #     user.username = user_data.username
+    # if user_data.email is not None:
+    #     user.email = user_data.email
+    # if user_data.image_file is not None:
+    #     user.image_file = user_data.image_file
+    user_update = user_data.model_dump(exclude_unset=True) 
+    print(type(user_update))
+    for key,value in user_update.items():
+        setattr(user,key,value)
+        
+
+    db.commit()
+    db.refresh(user)
+    return user
+        
      
 
 @app.get("/profile", include_in_schema=False, name="profile")
 def profiles(request: Request):
     return templates.TemplateResponse(request, "error.html")
 
-@app.patch("/api/")
+# @app.patch("/api/")
 
 @app.post("/api/users",response_model=UserResponse)
 def create_user(user:UserCreate,db:Annotated[Session,Depends(get_db)]):

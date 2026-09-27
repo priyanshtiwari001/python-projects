@@ -29,7 +29,7 @@
         <div class="flex items-center justify-start py-2 gap-5">
 
             <img
-                src="{{ url_for('static', path='profile.png') }}"
+                src="{{ post.author.image_path }}"
                 alt="{{ post.author.username }}"
                 class="w-10 h-10 rounded-lg object-cover"
             >

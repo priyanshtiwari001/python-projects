@@ -46,3 +46,13 @@ setattr
 
 delete,patch -  user
 cancade-all,delete-orphan
+
+
+
+# lecture 7
+
+
+lazy loading dont work
+what is lazy loading
+
+lifespan is the modern way to in fastapi to handle startup and shutdown. it replace the older deprecarted onstartup and onshutdown decorators while used in previous version
