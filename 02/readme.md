@@ -56,3 +56,25 @@ lazy loading dont work
 what is lazy loading
 
 lifespan is the modern way to in fastapi to handle startup and shutdown. it replace the older deprecarted onstartup and onshutdown decorators while used in previous version
+
+sync sqlalchemy vs async sqlchmey
+ 
+ sync sqlalchemy  - lazy loadin is just works
+    when we have post object and you access post.author so sqlalchmey automatically runs a query internally to load that author coz of the realtion and without any issue that called lazy loadin
+ async sqlchmey -> dont support lazy loading. if we try to do the same without expicitly loaded then it will not work 
+     -> sol -> eager loadin that -> selectandload
+
+
+# lecture 8
+create a routes folder
+and move all the route based users,posts
+  
+ # lecture 9
+ frontend
+
+ # lecture 10
+ authenication
+ - packages
+    pwdlib[argon2]/byscrypt -> hash
+    pyjwt - creating and verifying jwt
+    pydantic-settings /python.env 
