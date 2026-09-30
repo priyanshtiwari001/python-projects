@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
+from databases import Base
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from databases import Base
 
 
 class User(Base):
@@ -26,7 +25,7 @@ class User(Base):
     def image_path(self) -> str:
         if self.image_file:
             return f"/media/profile_pics/{self.image_file}"
-        return "/static/profile.png"
+        return "/static/profile_pics/image.png"
 
 
 class Post(Base):
