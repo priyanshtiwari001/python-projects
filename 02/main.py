@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
 from typing import Annotated
-from auth import hash_password
+
 import models
+from auth import hash_password
 from databases import Base, engine, get_db
-from fastapi import Depends, FastAPI, APIRouter, HTTPException, Request, status
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request, status
 from fastapi.exception_handlers import (
     http_exception_handler,
     request_validation_exception_handler,
@@ -95,39 +96,6 @@ async def user_post_page(
         "user_posts.html",
         {"posts": user_post, "user": user, "title": f"{user.username}'s Posts"},
     )
-
-
-@app.get("/api/posts", response_model=list[PostResponse])
-async def get_posts(db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(
-        select(models.Post).options(selectinload(models.Post.author))
-    )
-    posts = result.scalars().all()
-    return posts
-
-
-@app.get("/api/user/{user_id}/posts", response_model=list[PostResponse])
-async def user_post(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
-    res = await db.execute(
-        select(models.Post)
-        .options(selectinload(models.Post.author))
-        .where(models.Post.user_id == user_id)
-    )
-    user_post = res.scalars().all()
-    if not user_post:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="User is not found!"
-        )
-    return user_post
-
-
-@app.get("/api/post/{post_id}", response_model=PostResponse)
-async def get_post(post_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
-    res = await db.execute(select(models.Post).where(models.Post.id == post_id))
-    post = res.scalars().first()
-    if not post:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Post is not Found!")
-    return post
 
 
 @app.exception_handler(StarletteHTTPException)
